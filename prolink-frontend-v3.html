@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PROLINK</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{color-scheme:dark;--bg:#09090B;--panel:#111114;--line:#27272A;--text:#FAFAFA;--mute:#8A8A93;--red:#F87171;--wm:"";box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+button,select,input{font:inherit;color:inherit}
+button{cursor:pointer}
+.app{max-width:1000px;margin:0 auto;padding:20px 20px 64px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:6px 0 30px}
+.brand{display:flex;align-items:center}
+.brand img{height:44px;width:auto;max-width:100%;display:block}
+@media(max-width:700px){.brand img{height:36px}}
+nav{display:flex;gap:2px;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px}
+nav button{background:none;border:0;border-radius:999px;padding:7px 14px;color:var(--mute);font-size:13px;font-weight:500}
+nav button.on{background:#232328;color:var(--text)}
+.top{flex-wrap:wrap}
+nav button:hover{color:var(--text)}
+.public .top{display:none}
+.view{display:none}.view.on{display:block}
+h1{font-size:clamp(26px,4vw,38px);font-weight:600;letter-spacing:-.02em;margin:0 0 6px}
+.sub{color:var(--mute);margin:0 0 26px}
+.mut{color:var(--mute)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px;position:relative;overflow:hidden}
+.drop{border:1.5px dashed #3a3a42;border-radius:14px;min-height:270px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;padding:20px;cursor:pointer;transition:.2s}
+.drop:hover,.drop.over{border-color:rgba(255,255,255,.7);background:rgba(255,255,255,.04)}
+.drop svg{color:var(--mute)}
+.drop b{font-size:18px;font-weight:500}
+#idle{display:contents}
+.bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:#fff;transition:width .12s linear,opacity .4s}
+.controls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+@media(max-width:700px){.controls{grid-template-columns:1fr}nav button{padding:7px 10px}}
+.ctl{background:#0D0D10;border:1px solid var(--line);border-radius:12px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:52px}
+.ctl small{display:block;color:var(--mute);font-size:11px;letter-spacing:.07em;text-transform:uppercase}
+select{background:transparent;border:0;outline:0;font-weight:500;padding:2px 0;color-scheme:dark}
+.ic{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:none;display:grid;place-items:center;color:var(--mute)}
+.ic.on{color:#fff;border-color:#fff}
+.pin{width:64px;background:#17171b;border:1px solid var(--line);border-radius:8px;padding:6px;text-align:center;letter-spacing:.3em;outline:0}
+.sw{width:40px;height:22px;border-radius:999px;border:1px solid var(--line);background:#1c1c21;position:relative;padding:0}
+.sw::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#8A8A93;transition:.2s}
+.sw[aria-checked=true]{background:rgba(255,255,255,.18);border-color:#fff}
+.sw[aria-checked=true]::after{left:20px;background:#fff}
+.done{margin-top:18px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:#0D0D10}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;color:var(--mute);word-break:break-all}
+.cta{background:#fff;color:#09090B;border:0;border-radius:999px;padding:12px 24px;font-weight:600;transition:background .2s}
+.cta:hover{background:#E4E4E7}
+.ghost{background:none;border:1px solid var(--line);border-radius:999px;padding:9px 16px;font-size:13px}
+.ghost:hover{border-color:#52525b}
+.chead{display:flex;align-items:center;justify-content:space-between;padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:24px}
+.logo img{height:26px;width:auto;display:block}
+.trow h2{margin:0 0 2px;font-size:24px;font-weight:600;letter-spacing:-.01em}
+.trow{margin-bottom:16px}
+.stage{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#000}
+.player{aspect-ratio:16/9;position:relative;overflow:hidden;background:#000}
+.player video{width:100%;height:100%;object-fit:contain;display:block}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:6px}
+@media(max-width:560px){.grid{grid-template-columns:repeat(2,1fr)}}
+.tile{aspect-ratio:4/3;border-radius:8px;position:relative;overflow:hidden;cursor:zoom-in;background:#17171b;transition:.25s}
+.tile:hover{filter:brightness(1.15)}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.wm::after{content:var(--wm);position:absolute;inset:-30%;transform:rotate(-24deg);color:rgba(255,255,255,.26);font-weight:600;letter-spacing:.18em;font-size:11px;line-height:34px;text-align:center;overflow:hidden;pointer-events:none;z-index:1}
+.lb{position:fixed;inset:0;background:rgba(0,0,0,.92);display:grid;place-items:center;z-index:20;cursor:zoom-out}
+.lb .tile{width:min(92vw,1100px);cursor:zoom-out;animation:z .25s ease}
+@keyframes z{from{transform:scale(.92);opacity:0}}
+.dead{padding:70px 20px;text-align:center;display:grid;gap:6px}.dead span{color:var(--mute)}
+.gate{margin:22px auto 0;max-width:520px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+.gate div{flex:1;min-width:200px}.gate b{display:block;font-weight:500}.gate span{color:var(--mute);font-size:13px}
+.gate .err{color:var(--red);font-size:12px;display:block;min-height:1em}
+.dl{display:block;width:100%;max-width:420px;margin:28px auto 0;padding:18px 28px;border-radius:999px;border:0;background:#fff;color:#09090B;font-weight:600;font-size:16px;transition:.2s}
+.dl:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 30px rgba(255,255,255,.12)}
+.dl:disabled{opacity:.35;cursor:not-allowed}
+.wrap{overflow-x:auto}
+table{width:100%;min-width:660px;border-collapse:collapse}
+th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute);text-align:left;font-weight:500;padding:6px 12px 12px}
+td{padding:14px 12px;border-top:1px solid var(--line)}
+tr.off td{color:var(--mute)}
+.lk{background:none;border:0;padding:0;font-weight:500;text-align:left}.lk:hover{text-decoration:underline;text-underline-offset:3px}
+.st{display:inline-flex;align-items:center;gap:7px;font-size:13px}
+.st::before{content:"";width:7px;height:7px;border-radius:50%;background:#52525b}
+.st.a::before{background:#fff;box-shadow:0 0 8px #fff}
+.rev{background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.22);color:var(--red);border-radius:8px;padding:6px 11px;font-size:12px;opacity:.85}
+.rev:hover{opacity:1;background:rgba(248,113,113,.14)}
+.right{display:flex;align-items:center;justify-content:flex-end;gap:10px 40px;flex-wrap:wrap;margin-left:auto}
+.pro{display:inline-flex;align-items:center;gap:8px;background:none;border:0;border-radius:6px;padding:4px 0;margin:0;color:#3B82F6;font-size:14px;font-weight:600;line-height:1;white-space:nowrap}
+.pro:hover{color:#60A5FA}
+.pro:focus-visible{outline:2px solid #3B82F6;outline-offset:4px}
+.pro svg{flex:none;display:block}
+.lite{background:#232328;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:13px 24px;font-size:14px;font-weight:500;width:100%}
+.lite:hover{background:#2c2c32}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px);display:grid;place-items:center;padding:20px;z-index:25;animation:f .2s}
+@keyframes f{from{opacity:0}}
+.mbox{width:min(100%,440px);max-height:100%;overflow-y:auto;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:32px 26px 26px;position:relative;text-align:center;animation:z .25s ease}
+.mx{position:absolute;top:14px;right:14px;width:32px;height:32px;border:1px solid var(--line);border-radius:50%;background:none;color:var(--mute);font-size:13px;padding:0}
+.mx:hover{color:var(--text);border-color:#52525b}
+.mlogo{height:96px;width:auto;max-width:80%;object-fit:contain;display:block;margin:0 auto 14px}
+@media(max-height:640px){.mlogo{height:64px}}
+.mbox h3{margin:0;font-size:22px;font-weight:600;letter-spacing:-.01em;display:flex;align-items:center;justify-content:center;gap:10px}
+.mbox h3 svg{flex:none;display:block}
+.perks{list-style:none;padding:0;margin:22px 0 24px;display:grid;gap:10px;text-align:left}
+.perks li{display:flex;gap:14px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:#0D0D10}
+.perks svg{flex:none;display:block}
+.pi{flex:none;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.28)}
+.mbox .cta{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:15px;padding:14px 24px}
+.mbox .cta svg{flex:none;display:block}
+.perks b{display:block;font-weight:500}
+.perks span{color:var(--mute);font-size:13px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#1c1c21;border:1px solid var(--line);border-radius:999px;padding:10px 18px;font-size:13px;z-index:30;max-width:90vw}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand" role="img" aria-label="PROLINK"><img src="https://i.postimg.cc/zDhGSKrs/WARE-7-removebg-preview-(1).png" alt=""></div>
+    <div class="right">
+      <nav>
+        <button data-v="subir">Cargar</button>
+        <button data-v="cliente">Vista cliente</button>
+        <button data-v="enlaces">Enlaces</button>
+      </nav>
+      <button class="pro" id="pro" type="button"><svg width="18" height="18" viewBox="0 0 24 24" fill="#FACC15" stroke="#FACC15" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l5 5 4-7 4 7 5-5-2 11H5L3 7z"/><rect x="5" y="19.5" width="14" height="2" rx="1"/></svg>Mejorar plan</button>
+    </div>
+  </header>
+
+  <!-- PANTALLA 1: Zona de carga -->
+  <section class="view" id="v-subir">
+    <h1>Sube. Configura. Entrega.</h1>
+    <p class="sub">Archivos pesados con tu marca, sin pasar por una nube genérica.</p>
+    <div class="card">
+      <div class="drop" id="drop">
+        <div id="idle">
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+          <b>Suelta aquí tu vídeo 4K o ZIP</b>
+          <span class="mut">o haz clic para elegir un archivo</span>
+        </div>
+        <div id="busy" hidden><b id="fname"></b><div class="mut" id="pct">0 %</div></div>
+        <input type="file" id="file" hidden>
+      </div>
+      <div class="controls">
+        <div class="ctl"><div><small>Caducidad</small>
+          <select id="exp"><option value="24h">24 h</option><option value="7d">7 días</option><option value="first_download">Tras primera descarga</option></select></div></div>
+        <div class="ctl"><div><small>Seguridad</small><span id="pinst">Sin PIN</span></div>
+          <input class="pin" id="pin" maxlength="4" inputmode="numeric" placeholder="····" hidden aria-label="PIN de 4 dígitos">
+          <button class="ic" id="lock" aria-label="Añadir PIN"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></button></div>
+        <div class="ctl"><div><small>Marca de agua</small><span id="wmst">Quitarla requiere Pro</span></div>
+          <button class="sw" id="wm" role="switch" aria-checked="true" aria-label="Marca de agua"></button></div>
+      </div>
+      <div class="done" id="done" hidden>
+        <div><div class="mut" style="font-size:12px">Enlace listo</div><div class="mono" id="lnk"></div></div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <button class="ghost" id="seeC">Ver como cliente</button>
+          <button class="cta" id="copy">Copiar Enlace Pro</button>
+        </div>
+      </div>
+      <div class="bar" id="bar"></div>
+    </div>
+  </section>
+
+  <!-- PANTALLA 2: Enlace vivo (vista del cliente) -->
+  <section class="view" id="v-cliente">
+    <div class="chead">
+      <div class="logo"><img src="https://i.postimg.cc/zDhGSKrs/WARE-7-removebg-preview-(1).png" alt=""></div>
+      <span class="mut" style="font-size:12px">Entrega privada</span>
+    </div>
+    <div class="trow"><h2 id="cname"></h2><div class="mut" id="cmeta" style="font-size:13px"></div></div>
+    <div class="stage" id="stage"></div>
+    <div class="gate" id="gate" hidden>
+      <div><b>Entrega protegida</b><span>Introduce el PIN de 4 dígitos para liberar el archivo original.</span><span class="err" id="gerr"></span></div>
+      <input class="pin" id="gpin" maxlength="4" inputmode="numeric" placeholder="····" aria-label="PIN">
+      <button class="ghost" id="gok">Validar</button>
+    </div>
+    <button class="dl" id="dl" hidden>Descargar Archivo Completo</button>
+  </section>
+
+  <!-- PANTALLA 3: Panel de enlaces activos -->
+  <section class="view" id="v-enlaces">
+    <h1>Enlaces activos</h1>
+    <p class="sub">Controla lo que tienes rodando por ahí.</p>
+    <div class="card wrap">
+      <table>
+        <thead><tr><th>Archivo</th><th>Subida</th><th>Descargas</th><th>Estado</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+<div class="lb" id="lb" hidden></div>
+<div class="modal" id="pro-modal" hidden>
+  <div class="mbox" role="dialog" aria-modal="true" aria-labelledby="pro-t">
+    <button class="mx" id="pro-x" aria-label="Cerrar">✕</button>
+    <img class="mlogo" src="https://i.postimg.cc/zDhGSKrs/WARE-7-removebg-preview-(1).png" alt="">
+    <h3 id="pro-t"><svg width="22" height="22" viewBox="0 0 24 24" fill="#FACC15" stroke="#FACC15" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l5 5 4-7 4 7 5-5-2 11H5L3 7z"/><rect x="5" y="19.5" width="14" height="2" rx="1"/></svg>Suscripción Pro</h3>
+    <p class="mut" id="pro-sub" style="margin:6px 0 0">Acceso a todo.</p>
+    <ul class="perks">
+      <li><span class="pi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FACC15" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></span><div><b>Personalizar dominio</b><span>Entrega tus enlaces desde tu propio dominio.</span></div></li>
+      <li><span class="pi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FACC15" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/><path d="M4 4l16 16"/></svg></span><div><b>Eliminar marca de agua</b><span>Entregas limpias, sin marca de agua.</span></div></li>
+      <li><span class="pi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FACC15" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a4 4 0 0 1-.6-7.96 6 6 0 0 1 11.4 1.2A3.5 3.5 0 0 1 17.5 18H7z"/><path d="M12 15v-4m0 0-2 2m2-2 2 2"/></svg></span><div><b>Cargar archivos de hasta 100 GB</b><span>Para tus vídeos 4K y ZIP más pesados.</span></div></li>
+    </ul>
+    <button class="cta" id="pro-go"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" aria-hidden="true"><path d="M3 7l5 5 4-7 4 7 5-5-2 11H5L3 7z"/><rect x="5" y="19.5" width="14" height="2" rx="1"/></svg>Suscribirme a Pro</button>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ============================================================
+   CONTRATO DE API (lo que debe implementar el backend en Python)
+   Base: CONFIG.api  ·  Sesión del creador por cookie.
+
+   Panel del creador
+   GET    /api/links                → [Link]
+   POST   /api/links                → Link   (multipart: file, expires, pin, watermark)
+   DELETE /api/links/{id}           → 204    (revocar / destruir)
+
+   Vista del cliente (pública)
+   GET    /api/public/{id}          → Public
+   POST   /api/public/{id}/unlock   → {token}   body JSON {pin}; 403 si es incorrecto
+   GET    /api/public/{id}/download → archivo (Content-Disposition: attachment);
+                                      ?token=... si el enlace tiene PIN. Cuenta la descarga.
+
+   Link   = {id, name, url, created_at (ISO), downloads, status: active|expired|revoked}
+            + en POST también: expires, has_pin, watermark
+   Public = {id, name, kind: video|gallery, status, expires: 24h|7d|first_download,
+             has_pin, watermark, watermark_text?,
+             media: {video_url, poster_url?}   (si kind=video)
+             items: [{thumb, full}]            (si kind=gallery)}
+   Suscripción Pro
+   GET    /api/subscription          → {pro: bool}   (plan del creador; si falla o no existe, el front asume gratis)
+   POST   /api/subscription/checkout → {url}   (el front redirige a esa URL de pago)
+
+   OJO: sin Pro la marca de agua es obligatoria. El front fuerza watermark=true,
+   pero el backend DEBE imponerlo también en POST /api/links (ignorar watermark=false si no es Pro).
+
+   Errores: JSON {detail: "mensaje"}
+
+   El cliente abre el enlace en /d/{id} (o /?l={id}): mismo HTML, solo vista cliente.
+   ============================================================ */
+const CONFIG={api:'/api',watermarkText:'PROLINK'};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const EXP={'24h':'en 24 horas','7d':'en 7 días','first_download':'tras la primera descarga'};
+const fmtD=iso=>new Date(iso).toLocaleDateString('es-ES',{day:'numeric',month:'short',year:'numeric'});
+const NOCONN='Sin conexión con el servidor';
+let opt={exp:'24h',pin:'',wm:true},curId=null,pub=null,token=null,publicMode=false,isPro=false;
+
+function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>t.hidden=true,3500)}
+async function api(path,o={}){
+  let r;
+  try{r=await fetch(CONFIG.api+path,{credentials:'same-origin',...o})}catch(_){throw new Error(NOCONN)}
+  if(!r.ok){
+    let m='Error '+r.status;
+    try{const j=await r.json();if(typeof j.detail==='string')m=j.detail;else if(j.message)m=j.message}catch(_){}
+    throw new Error(m);
+  }
+  return r.status===204?null:r.json();
+}
+const dead=(h,s)=>`<div class="dead"><b>${esc(h)}</b><span>${esc(s)}</span></div>`;
+
+function show(v){
+  if(publicMode)v='cliente';
+  if(!['subir','cliente','enlaces'].includes(v))v='subir';
+  $$('.view').forEach(e=>e.classList.toggle('on',e.id==='v-'+v));
+  $$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+  if(v==='cliente')loadClient();
+  if(v==='enlaces')loadTable();
+  if(!publicMode&&location.hash!=='#'+v)location.hash=v;
+}
+addEventListener('hashchange',()=>{if(!publicMode)show(location.hash.slice(1))});
+$$('nav button').forEach(b=>b.onclick=()=>show(b.dataset.v));
+
+/* ---------- Pantalla 1: carga ---------- */
+const drop=$('#drop');
+drop.onclick=()=>$('#file').click();
+$('#file').onchange=e=>{const f=e.target.files[0];if(f)startUpload(f)};
+['dragover','dragenter'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',e=>{const f=e.dataTransfer.files[0];if(f)startUpload(f)});
+$('#exp').onchange=e=>opt.exp=e.target.value;
+$('#wm').onclick=e=>{
+  /* Sin Pro la marca de agua es obligatoria: si intenta quitarla, salta el popup y el interruptor no cambia */
+  if(!isPro){opt.wm=true;e.currentTarget.setAttribute('aria-checked','true');openPro('Quitar la marca de agua es una ventaja exclusiva de Pro.');return}
+  opt.wm=!opt.wm;e.currentTarget.setAttribute('aria-checked',opt.wm);
+};
+$('#lock').onclick=()=>{const p=$('#pin');p.hidden=!p.hidden;if(!p.hidden)p.focus()};
+$('#pin').oninput=e=>{
+  e.target.value=e.target.value.replace(/\D/g,'').slice(0,4);
+  opt.pin=e.target.value.length===4?e.target.value:'';
+  $('#pinst').textContent=opt.pin?'PIN activo':'Sin PIN';
+  $('#lock').classList.toggle('on',!!opt.pin);
+};
+function resetDrop(ok){
+  $('#busy').hidden=true;$('#idle').hidden=false;$('#file').value='';
+  setTimeout(()=>{$('#bar').style.opacity=0},ok?500:0);
+}
+function startUpload(file){
+  $('#idle').hidden=true;$('#busy').hidden=false;$('#done').hidden=true;
+  $('#fname').textContent=file.name;$('#pct').textContent='0 %';
+  const bar=$('#bar');bar.style.opacity=1;bar.style.width='0%';
+  const x=new XMLHttpRequest();
+  x.open('POST',CONFIG.api+'/links');
+  x.withCredentials=true;
+  x.upload.onprogress=e=>{if(e.lengthComputable){const p=e.loaded/e.total*100;bar.style.width=p+'%';$('#pct').textContent=Math.round(p)+' %'}};
+  x.onload=()=>{
+    let j={};try{j=JSON.parse(x.responseText)}catch(_){}
+    if(x.status<200||x.status>=300){toast(typeof j.detail==='string'?j.detail:'Error al subir ('+x.status+')');return resetDrop(false)}
+    curId=j.id;$('#lnk').textContent=j.url;$('#done').hidden=false;resetDrop(true);
+  };
+  x.onerror=()=>{toast(NOCONN);resetDrop(false)};
+  const f=new FormData();
+  f.append('file',file);f.append('expires',opt.exp);f.append('pin',opt.pin);f.append('watermark',isPro?opt.wm:true);
+  x.send(f);
+}
+$('#copy').onclick=async e=>{
+  const b=e.currentTarget;
+  try{await navigator.clipboard.writeText($('#lnk').textContent)}catch(_){}
+  b.textContent='¡Enlace copiado!';
+  setTimeout(()=>b.textContent='Copiar Enlace Pro',1800);
+};
+$('#seeC').onclick=()=>show('cliente');
+
+/* ---------- Pantalla 2: vista del cliente ---------- */
+async function loadClient(){
+  token=null;$('#gpin').value='';
+  $('#gate').hidden=true;$('#dl').hidden=true;
+  if(!curId){$('#cname').textContent='';$('#cmeta').textContent='';$('#stage').innerHTML=dead('Ningún enlace seleccionado','Ábrelo desde el panel de enlaces.');return}
+  $('#stage').innerHTML='<div class="dead"><span>Cargando…</span></div>';
+  try{pub=await api('/public/'+encodeURIComponent(curId))}
+  catch(e){pub=null;$('#stage').innerHTML=dead('No se pudo cargar el enlace',e.message);return}
+  drawClient();
+}
+function drawClient(){
+  const l=pub,st=$('#stage');
+  $('#cname').textContent=l.name.replace(/\.\w+$/,'').replace(/_/g,' ');
+  if(l.status!=='active'){
+    $('#cmeta').textContent='Enlace destruido';
+    st.innerHTML=dead('Este enlace ya no está disponible','El creador lo ha revocado o ha caducado.');
+    $('#gate').hidden=true;$('#dl').hidden=true;return;
+  }
+  $('#cmeta').textContent='Enlace seguro · caduca '+(EXP[l.expires]||'');
+  document.documentElement.style.setProperty('--wm',JSON.stringify(Array(14).fill(l.watermark_text||CONFIG.watermarkText).join(' · ')));
+  const w=l.watermark?' wm':'';
+  st.innerHTML=l.kind==='video'
+    ?`<div class="player${w}"><video src="${esc(l.media.video_url)}" poster="${esc(l.media.poster_url||'')}" controls controlsList="nodownload" playsinline preload="metadata"></video></div>`
+    :`<div class="grid">${(l.items||[]).map(i=>`<div class="tile${w}" data-full="${esc(i.full)}"><img src="${esc(i.thumb)}" alt="" loading="lazy"></div>`).join('')}</div>`;
+  const locked=l.has_pin&&!token;
+  $('#gate').hidden=!locked;$('#gerr').textContent='';
+  const d=$('#dl');d.hidden=false;d.disabled=locked;d.textContent='Descargar Archivo Completo';
+}
+$('#stage').onclick=e=>{
+  const t=e.target.closest('.tile');if(!t)return;
+  const lb=$('#lb');
+  lb.innerHTML=`<div class="tile${pub&&pub.watermark?' wm':''}"><img src="${esc(t.dataset.full)}" alt=""></div>`;
+  lb.hidden=false;
+};
+$('#lb').onclick=()=>$('#lb').hidden=true;
+addEventListener('keydown',e=>{if(e.key==='Escape')$('#lb').hidden=true});
+async function unlock(){
+  try{
+    const r=await api('/public/'+encodeURIComponent(curId)+'/unlock',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pin:$('#gpin').value})});
+    token=r.token;drawClient();
+  }catch(e){$('#gerr').textContent=e.message===NOCONN?e.message:'PIN incorrecto. Inténtalo de nuevo.'}
+}
+$('#gok').onclick=unlock;
+$('#gpin').onkeydown=e=>{if(e.key==='Enter')unlock()};
+$('#dl').onclick=e=>{
+  const b=e.currentTarget;b.disabled=true;b.textContent='Descarga iniciada ✓';
+  const a=document.createElement('a');
+  a.href=CONFIG.api+'/public/'+encodeURIComponent(curId)+'/download'+(token?'?token='+encodeURIComponent(token):'');
+  a.download='';document.body.append(a);a.click();a.remove();
+  setTimeout(async()=>{try{pub=await api('/public/'+encodeURIComponent(curId));drawClient()}catch(_){}},2000);
+};
+
+/* ---------- Pantalla 3: panel de enlaces ---------- */
+const emptyRow=t=>`<tr><td colspan="5" class="mut" style="text-align:center;padding:36px">${esc(t)}</td></tr>`;
+async function loadTable(){
+  const rows=$('#rows');
+  try{
+    const ls=await api('/links');
+    rows.innerHTML=ls.length?ls.map(l=>{
+      const on=l.status==='active';
+      return `<tr class="${on?'':'off'}">
+        <td><button class="lk" data-o="${esc(l.id)}">${esc(l.name)}</button></td>
+        <td>${fmtD(l.created_at)}</td><td>${l.downloads}</td>
+        <td><span class="st${on?' a':''}">${on?'Activo':'Expirado'}</span></td>
+        <td style="text-align:right">${on?`<button class="rev" data-r="${esc(l.id)}">Revocar / Destruir enlace</button>`:'<span class="mut">—</span>'}</td></tr>`;
+    }).join(''):emptyRow('Aún no hay enlaces. Sube tu primer archivo.');
+  }catch(e){rows.innerHTML=emptyRow(e.message)}
+}
+$('#rows').onclick=async e=>{
+  const o=e.target.closest('[data-o]'),r=e.target.closest('[data-r]');
+  if(o){curId=o.dataset.o;show('cliente')}
+  if(!r)return;
+  if(r.dataset.armed){
+    try{await api('/links/'+encodeURIComponent(r.dataset.r),{method:'DELETE'})}catch(err){toast(err.message)}
+    loadTable();
+  }else{
+    r.dataset.armed=1;r.textContent='¿Seguro? Pulsa de nuevo';
+    setTimeout(()=>{if(r.isConnected){delete r.dataset.armed;r.textContent='Revocar / Destruir enlace'}},2500);
+  }
+};
+
+/* ---------- Popup Pro ---------- */
+const pm=$('#pro-modal'),PRO_SUB='Acceso a todo.';
+function openPro(msg){$('#pro-sub').textContent=msg||PRO_SUB;pm.hidden=false}
+const closePro=()=>{pm.hidden=true};
+$('#pro').onclick=()=>openPro();
+$('#pro-x').onclick=closePro;
+pm.onclick=e=>{if(e.target===pm)closePro()};
+addEventListener('keydown',e=>{if(e.key==='Escape')closePro()});
+$('#pro-go').onclick=async()=>{
+  try{const r=await api('/subscription/checkout',{method:'POST'});location.href=r.url}
+  catch(e){toast(e.message)}
+};
+
+/* ---------- Plan del creador (marca de agua obligatoria sin Pro) ---------- */
+function applyPlan(){
+  $('#pro').hidden=isPro;
+  if(!isPro)opt.wm=true;
+  $('#wm').setAttribute('aria-checked',opt.wm);
+  $('#wmst').textContent=isPro?'Aplicar a la entrega':'Quitarla requiere Pro';
+}
+async function loadPlan(){
+  try{const r=await api('/subscription');isPro=!!(r&&r.pro)}catch(_){isPro=false}
+  applyPlan();
+}
+
+/* ---------- Arranque ---------- */
+const m=location.pathname.match(/^\/d\/([\w-]+)/),pid=m?m[1]:new URLSearchParams(location.search).get('l');
+if(pid){publicMode=true;curId=pid;document.body.classList.add('public');show('cliente')}
+else{show(location.hash.slice(1)||'subir');loadPlan()}
+</script>
+</body>
+</html>
